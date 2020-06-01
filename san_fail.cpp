@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <optional>
+#include <sstream>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -59,6 +60,14 @@ class Domain {
     return Range(begin(parts_reversed_), end(parts_reversed_));
   }
 
+  string ToStr() const {
+    stringstream x;
+    for (const auto& z : parts_reversed_) {
+      x << z << " ";
+    }
+    return x.str();
+  }
+
  private:
   vector<string> parts_reversed_;
 };
@@ -68,7 +77,7 @@ bool IsSubdomain(const Domain& subdomain, const Domain& domain) {
   const auto subdomain_reversed_parts = subdomain.GetReversedParts();
   const auto domain_reversed_parts = domain.GetReversedParts();
   return subdomain.GetPartCount() >= domain.GetPartCount() && equal(begin(domain_reversed_parts), end(domain_reversed_parts),
-                                                                    end(subdomain_reversed_parts));
+                                                                    begin(subdomain_reversed_parts));
 }
 
 bool IsSubOrSuperDomain(const Domain& lhs, const Domain& rhs) {
@@ -81,7 +90,8 @@ class DomainChecker {
  public:
   template <typename InputIt>
   DomainChecker(InputIt domains_begin, InputIt domains_end) {
-    sorted_domains_.resize(distance(domains_begin, domains_end));
+    // sorted_domains_.resize(distance(domains_begin, domains_end));
+    // cout << sorted_domains_.size() << endl;
     for (const Domain& domain : Range(domains_begin, domains_end)) {
       sorted_domains_.push_back(&domain);
     }
@@ -160,6 +170,14 @@ int main() {
   cin.tie(nullptr);
   const vector<Domain> banned_domains = ReadDomains();
   const vector<Domain> domains_to_check = ReadDomains();
+  // cout << "Banned:" << endl;
+  // for (const auto& x : banned_domains) {
+  //   cout << x.ToStr() << endl;
+  // }
+  // cout << "ToCheck:" << endl;
+  // for (const auto& x : domains_to_check) {
+  //   cout << x.ToStr() << endl;
+  // }
   PrintCheckResults(CheckDomains(banned_domains, domains_to_check));
   return 0;
 }

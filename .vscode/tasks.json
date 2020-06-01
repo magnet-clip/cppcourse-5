@@ -2,9 +2,51 @@
   "tasks": [
     {
       "type": "shell",
-      "label": "CMake Full Build",
+      "label": "Clean",
+      "command": "${workspaceFolder}/scripts/clean.sh",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "CMake Build GCC",
       "command": "${workspaceFolder}/scripts/cmake.sh",
       "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "CMake Build CLANG",
+      "command": "${workspaceFolder}/scripts/cmake.sh",
+      "args": ["clang"],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "CMake Build SANITIZE",
+      "command": "${workspaceFolder}/scripts/cmake.sh",
+      "args": ["sanitize"],
       "options": {
         "cwd": "${workspaceFolder}/build"
       },

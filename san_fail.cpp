@@ -166,18 +166,14 @@ void PrintCheckResults(const vector<bool>& check_results, ostream& out_stream = 
 }
 
 int main() {
+#ifdef DEBUG_MODE
+  cout << "DEBUG" << endl;
+#endif
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   const vector<Domain> banned_domains = ReadDomains();
   const vector<Domain> domains_to_check = ReadDomains();
-  // cout << "Banned:" << endl;
-  // for (const auto& x : banned_domains) {
-  //   cout << x.ToStr() << endl;
-  // }
-  // cout << "ToCheck:" << endl;
-  // for (const auto& x : domains_to_check) {
-  //   cout << x.ToStr() << endl;
-  // }
+
   PrintCheckResults(CheckDomains(banned_domains, domains_to_check));
   return 0;
 }

@@ -16,9 +16,9 @@
     },
     {
       "type": "shell",
-      "label": "CMake Build GCC",
+      "label": "Gcc Release",
       "command": "${workspaceFolder}/scripts/cmake.sh",
-      "args": [],
+      "args": ["release"],
       "options": {
         "cwd": "${workspaceFolder}/build"
       },
@@ -26,13 +26,14 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      }
+      },
+      "dependsOn": ["Clean"]
     },
     {
       "type": "shell",
-      "label": "CMake Build CLANG",
+      "label": "Clang Release",
       "command": "${workspaceFolder}/scripts/cmake.sh",
-      "args": ["clang"],
+      "args": ["release", "clang"],
       "options": {
         "cwd": "${workspaceFolder}/build"
       },
@@ -40,13 +41,58 @@
       "group": {
         "kind": "build",
         "isDefault": true
-      }
+      },
+      "dependsOn": ["Clean"]
     },
     {
       "type": "shell",
-      "label": "CMake Build SANITIZE",
+      "label": "Gcc Test",
       "command": "${workspaceFolder}/scripts/cmake.sh",
-      "args": ["sanitize"],
+      "args": ["test"],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": ["Clean"]
+    },
+    {
+      "type": "shell",
+      "label": "Clang Test",
+      "command": "${workspaceFolder}/scripts/cmake.sh",
+      "args": ["test", "clang"],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": ["Clean"]
+    },
+    {
+      "type": "shell",
+      "label": "Clang Debug",
+      "command": "${workspaceFolder}/scripts/cmake.sh",
+      "args": ["debug"],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": ["Clean"]
+    },
+    {
+      "type": "shell",
+      "label": "Make",
+      "command": "make",
       "options": {
         "cwd": "${workspaceFolder}/build"
       },

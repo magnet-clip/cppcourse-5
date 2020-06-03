@@ -1,10 +1,13 @@
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <optional>
 #include <sstream>
 #include <string>
 #include <string_view>
 #include <vector>
+
+#include "test_runner.h"
 
 using namespace std;
 
@@ -90,8 +93,7 @@ class DomainChecker {
  public:
   template <typename InputIt>
   DomainChecker(InputIt domains_begin, InputIt domains_end) {
-    // sorted_domains_.resize(distance(domains_begin, domains_end));
-    // cout << sorted_domains_.size() << endl;
+    sorted_domains_.reserve(distance(domains_begin, domains_end));
     for (const Domain& domain : Range(domains_begin, domains_end)) {
       sorted_domains_.push_back(&domain);
     }
@@ -107,7 +109,7 @@ class DomainChecker {
     if (it == begin(sorted_domains_)) {
       return false;
     }
-    return ::IsSubdomain(candidate, **it);
+    return ::IsSubdomain(candidate, **prev(it));
   }
 
  private:
@@ -165,10 +167,55 @@ void PrintCheckResults(const vector<bool>& check_results, ostream& out_stream = 
   }
 }
 
+void RunIntegrationTest(string name, istream& input, istream& expected) {
+  stringstream os;
+
+  cout << name << endl;
+  cout << " - reading" << endl;
+
+  const vector<Domain> banned_domains = ReadDomains(input);
+  const vector<Domain> domains_to_check = ReadDomains(input);
+  cout << " - checking" << endl;
+
+  stringstream actual;
+  auto res = CheckDomains(banned_domains, domains_to_check);
+
+  cout << " - printing" << endl;
+  PrintCheckResults(res, actual);
+
+  string a, e;
+  while ((expected >> e) && (actual >> a)) {
+    cout << a << endl;
+    cout << e << endl;
+
+    ASSERT_EQUAL(a, e);
+    cout << "Ok" << endl;
+  }
+  ASSERT_EQUAL(expected.eof(), actual.eof());
+}
+
+void TestFiles(const string& name, const string& input_file, const string& output_file) {
+  ifstream f_input("./test/" + input_file);
+  ifstream f_output("./test/" + output_file);
+  if (!f_input.is_open() || !f_output.is_open()) {
+    throw domain_error("Failed to open test files");
+  }
+  RunIntegrationTest(name, f_input, f_output);
+}
+
+void Test1() {
+  TestFiles("Test 1", "input-1.txt", "output-1.txt");
+}
+
+void RunIntegrationTests() {
+  TestRunner tr;
+  RUN_TEST(tr, Test1);
+}
+
 int main() {
-#ifdef DEBUG_MODE
-  cout << "DEBUG" << endl;
-#endif
+#ifdef RUN_TESTS
+  RunIntegrationTests();
+#else
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   const vector<Domain> banned_domains = ReadDomains();
@@ -176,4 +223,5 @@ int main() {
 
   PrintCheckResults(CheckDomains(banned_domains, domains_to_check));
   return 0;
+#endif
 }

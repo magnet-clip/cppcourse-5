@@ -1,0 +1,1 @@
+sfdp -Gsize=67! -Goverlap=prism -Tpng $1.dot > $1.png

@@ -34,7 +34,7 @@ esac
 cmake .. 
 
 echo "MODE=$MODE" >> last_build
-if [ -n "$CXX" ]; 
+if [ -n "$CXX" ]; then
   echo "CXX=$CXX" >> last_build
 fi
 

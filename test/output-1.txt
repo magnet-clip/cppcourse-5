@@ -1,7 +1,4 @@
-Bad
-Bad
-Bad
-Bad
-Bad
-Good
-Good
+20
+18.96
+8.46
+8.46

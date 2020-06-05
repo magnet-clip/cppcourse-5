@@ -31,4 +31,11 @@ case "$1" in
     ;;
 esac
 
-cmake .. && make
+cmake .. 
+
+echo "MODE=$MODE" >> last_build
+if [ -n "$CXX" ]; 
+  echo "CXX=$CXX" >> last_build
+fi
+
+make
